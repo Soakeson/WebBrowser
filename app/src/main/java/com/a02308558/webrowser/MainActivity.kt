@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val history = DoublyLinkedList<String>()
+        val history = History<String>("")
 
         super.onCreate(savedInstanceState)
         val mainLayout = LinearLayout(this).apply {
@@ -47,10 +47,7 @@ class MainActivity : AppCompatActivity() {
         val backButton = Button(this).apply {
             setText("Back")
             setOnClickListener {
-                history.back()
-                if (history.curr != null) {
-                    webView.loadUrl(history.curr!!.data)
-                }
+                webView.loadUrl(history.back())
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
@@ -60,10 +57,7 @@ class MainActivity : AppCompatActivity() {
         val forwardButton = Button(this).apply {
             setText("Forward")
             setOnClickListener {
-                history.next()
-                if (history.curr != null) {
-                    webView.loadUrl(history.curr!!.data)
-                }
+                webView.loadUrl(history.next())
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
