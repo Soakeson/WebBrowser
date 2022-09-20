@@ -4,28 +4,35 @@ import java.lang.Exception
 import java.util.*
 
 class History<E>(data: E) {
-    var curr: Node<E> = Node(data, null, null)
+    var curr: Node<E>? = null
 
     fun enqueue(data: E): History<E> {
-        curr.next = Node<E>(data, null, curr)
-        curr = curr.next!!
-        return this
+        if (curr == null) {
+            curr = Node<E>(data, null, null)
+            return this
+        } else {
+            curr!!.next = Node<E>(data, null, curr)
+            curr = curr!!.next!!
+            return this
+        }
     }
 
-    fun back(): E {
-        if (curr.previous != null) {
-            curr = curr.previous!!
-            return curr.data
+    fun back(): E? {
+        if (curr == null) return null
+        if (curr!!.previous != null) {
+            curr = curr!!.previous!!
+            return curr!!.data
         }
-        return curr.data
+        return curr!!.data
     }
 
-    fun next(): E {
-        if (curr.next != null) {
-            curr = curr.next!!
-            return curr.data
+    fun next(): E? {
+        if (curr == null) return null
+        if (curr!!.next != null) {
+            curr = curr!!.next!!
+            return curr!!.data
         }
-        return curr.data
+        return curr!!.data
     }
 }
 

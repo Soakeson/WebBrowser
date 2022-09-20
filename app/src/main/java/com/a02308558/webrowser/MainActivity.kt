@@ -1,8 +1,10 @@
 package com.a02308558.webrowser
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
+import android.text.Editable
+import android.text.SpannableString
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
@@ -11,9 +13,8 @@ import android.widget.LinearLayout
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val history = History<String>("")
-
         super.onCreate(savedInstanceState)
+        val history = History("")
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
         };
@@ -47,20 +48,26 @@ class MainActivity : AppCompatActivity() {
         val backButton = Button(this).apply {
             setText("Back")
             setOnClickListener {
-                webView.loadUrl(history.back())
+                val prev = history.back()
+                addressBar.setText(prev)
+                webView.loadUrl(prev.toString())
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
+                setTextColor(Color.WHITE)
             }
         }
 
         val forwardButton = Button(this).apply {
             setText("Forward")
             setOnClickListener {
-                webView.loadUrl(history.next())
+                val next = history.next()
+                addressBar.setText(next)
+                webView.loadUrl(next.toString())
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
+                setTextColor(Color.WHITE)
             }
         }
 
