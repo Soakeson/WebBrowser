@@ -14,15 +14,19 @@ import android.widget.LinearLayout
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val history = History("")
+        val history = History<String>()
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
         };
 
         val webView = WebView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                weight = 1f
+            }
         }
-
         webView.webViewClient = WebViewClient()
 
         val addressBar = EditText(this).apply {
@@ -33,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         val searchButton = Button(this).apply {
             setText("Search")
             setOnClickListener {
-                history.enqueue(addressBar.text.toString())
                 webView.loadUrl(addressBar.text.toString())
+                history.enqueue(addressBar.text.toString())
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .1f
@@ -49,12 +53,13 @@ class MainActivity : AppCompatActivity() {
             setText("Back")
             setOnClickListener {
                 val prev = history.back()
-                addressBar.setText(prev)
-                webView.loadUrl(prev.toString())
+                if (prev != null) {
+                    addressBar.setText(prev)
+                    webView.loadUrl(prev.toString())
+                }
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
-                setTextColor(Color.WHITE)
             }
         }
 
@@ -62,12 +67,13 @@ class MainActivity : AppCompatActivity() {
             setText("Forward")
             setOnClickListener {
                 val next = history.next()
-                addressBar.setText(next)
-                webView.loadUrl(next.toString())
+                if (next != null) {
+                    addressBar.setText(next)
+                    webView.loadUrl(next.toString())
+                }
             }
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 weight = .5f
-                setTextColor(Color.WHITE)
             }
         }
 
@@ -80,9 +86,8 @@ class MainActivity : AppCompatActivity() {
 
         mainLayout.apply {
             addView(addressBarLayout)
-            addView(navigationBarLayout)
             addView(webView)
-
+            addView(navigationBarLayout)
         }
         setContentView(mainLayout)
     }

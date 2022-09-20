@@ -1,9 +1,7 @@
 package com.a02308558.webrowser
 
-import java.lang.Exception
-import java.util.*
 
-class History<E>(data: E) {
+class History<E>() {
     var curr: Node<E>? = null
 
     fun enqueue(data: E): History<E> {
@@ -38,3 +36,4 @@ class History<E>(data: E) {
 
 class Node<E>(var data: E, var next: Node<E>?, var previous: Node<E>?) {
 }
+
